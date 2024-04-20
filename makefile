@@ -1,4 +1,5 @@
 APP_NAME = codedocgenerator
+DOC_LIB_NAME = docparserlib
 
 BIN_DIR = bin
 OBJ_DIR = obj
@@ -12,21 +13,28 @@ LDFLAGS =
 LDLIBS = 
 
 APP_PATH = $(BIN_DIR)/$(APP_NAME)
+LIB_PATH = $(OBJ_DIR)/$(SRC_DIR)/$(DOC_LIB_NAME)/$(DOC_LIB_NAME).a
 
 SRC_EXT = cpp
 
 APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.$(SRC_EXT)')
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
+LIB_NAMES = $(DOC_LIB_NAME)
+LIB_SOURCES = $(shell find $(SRC_DIR)/$(LIB_NAMES) -name '*.$(SRC_EXT)')
+LIB_OBJECTS = $(LIB_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
+
 DEPS = $(APP_OBJECTS:.o=.d)
 
 .PHONY: all
-all: $(APP_PATH)
+all: $(APP_PATH) $(LIB_PATH)
 
--include $(DEPS)
-
-$(APP_PATH): $(APP_OBJECTS)
+$(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
 	$(CXX) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDFLAGS) $(LDLIBS)
+
+$(LIB_PATH): $(LIB_OBJECTS)
+	mkdir -p $(dir $@)
+	ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: %.cpp
 	mkdir -p $(dir $@)
@@ -34,6 +42,8 @@ $(OBJ_DIR)/%.o: %.cpp
 
 .PHONY: clean
 clean:
-	$(RM) $(APP_PATH) $(LIB_PATH) $(TEST_PATH)
+	$(RM) $(APP_PATH) $(LIB_PATH)
 	find $(OBJ_DIR) -name '*.o' -exec $(RM) '{}' \;
 	find $(OBJ_DIR) -name '*.d' -exec $(RM) '{}' \;
+
+-include $(DEPS)

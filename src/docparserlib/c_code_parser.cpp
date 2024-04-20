@@ -1,5 +1,4 @@
 #include "c_code_parser.h"
-#include <format>
 #include <fstream>
 #include <iostream>
 
@@ -7,7 +6,7 @@ dp::CCodeParser::CCodeParser(std::string cPathStr) : _cPath{cPathStr}
 {
 }
 
-dp::CCodeParser::CCodeParser(char* cPath) : _cPath{std::string(cPath)}
+dp::CCodeParser::CCodeParser(const char* cPath) : _cPath{std::string(cPath)}
 {
 }
 
@@ -25,7 +24,7 @@ void dp::CCodeParser::SetPath(std::string cPathStr)
     _cPath = cPathStr;
 }
 
-void dp::CCodeParser::SetPath(char* cPath)
+void dp::CCodeParser::SetPath(const char* cPath)
 {
     _cPath = std::string(cPath);
 }
@@ -76,23 +75,20 @@ std::vector<dp::DocUnit> dp::CCodeParser::Parse()
         }
     }
 
-    return _docData;
     file.close();
+    return _docData;
 }
 
 void dp::CCodeParser::PrintDocs()
 {
     const std::string listMarker = "  ";
+
     for (const auto& docUnit : _docData) {
         std::cout << (docUnit.Name.length() != 0 ? "Name: " + docUnit.Name + "\n" : "");
 
-        std::cout << std::format(
-                "Function: {} [{}] [{}] [{}]",
-                (docUnit.Function.isConst ? "const" : "not const"),
-                docUnit.Function.Type,
-                docUnit.Function.Name,
-                docUnit.Function.VarParams)
-                  << std::endl;
+        std::cout << "Function: "
+                  << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] [" << docUnit.Function.Type
+                  << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]" << std::endl;
 
         std::cout << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
 
