@@ -9,7 +9,7 @@ int main()
         parser.SetPath("example/docexample.c");
         parser.Parse();
         parser.PrintDocs();
-    } catch (std::invalid_argument iaex) {
+    } catch (const std::invalid_argument& iaex) {
         std::cerr << iaex.what() << std::endl;
     }
 
