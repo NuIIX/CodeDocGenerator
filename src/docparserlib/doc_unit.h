@@ -3,10 +3,10 @@
 #ifndef DOCUNIT_H
 #define DOCUNIT_H
 
+#include "doc_function.h"
+#include "doc_param.h"
 #include <string>
 #include <vector>
-#include "doc_param.h"
-#include "doc_function.h"
 
 namespace dp {
     struct DocUnit {
