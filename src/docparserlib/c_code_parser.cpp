@@ -1,5 +1,5 @@
 #include "c_code_parser.h"
-#include <fstream>
+#include "file_utils.h"
 #include <iostream>
 
 dp::CCodeParser::CCodeParser(std::string cPathStr) : _cPath{cPathStr}
@@ -36,11 +36,7 @@ std::vector<dp::DocUnit> dp::CCodeParser::GetDocs()
 
 std::vector<dp::DocUnit> dp::CCodeParser::Parse()
 {
-    std::ifstream file(_cPath);
-
-    if (!file.is_open()) {
-        throw std::invalid_argument("Unable to read file <" + _cPath + ">");
-    }
+    std::ifstream file = OpenFileRead(_cPath);
 
     std::string line;
     std::smatch matches;
