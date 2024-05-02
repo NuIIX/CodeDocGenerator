@@ -80,11 +80,9 @@ void dp::CCodeParser::PrintDocs()
     const std::string listMarker = "  ";
 
     for (const auto& docUnit : _docData) {
-        std::cout << (docUnit.Name.length() != 0 ? "Name: " + docUnit.Name + "\n" : "");
-
-        std::cout << "Function: "
-                  << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] [" << docUnit.Function.Type
-                  << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]" << std::endl;
+        std::cout << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
+                  << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams
+                  << "]" << std::endl;
 
         std::cout << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
 
