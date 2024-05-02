@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 
-namespace dp {
+namespace hg {
     std::ofstream OpenFileWrite(const std::string&);
 }
 

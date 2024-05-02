@@ -1,6 +1,7 @@
 #include "file_utils.h"
 
-std::ofstream dp::OpenFileWrite(const std::string& path) {
+std::ofstream hg::OpenFileWrite(const std::string& path)
+{
     std::ofstream file(path);
 
     if (!file.is_open()) {
