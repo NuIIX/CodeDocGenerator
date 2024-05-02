@@ -8,6 +8,7 @@
 
 namespace hg {
     std::ofstream OpenFileWrite(const std::string&);
+    std::ifstream OpenFileRead(const std::string&);
 }
 
 #endif // !FILEUTILS_H

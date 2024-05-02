@@ -10,3 +10,14 @@ std::ofstream hg::OpenFileWrite(const std::string& path)
 
     return file;
 }
+
+std::ifstream hg::OpenFileRead(const std::string& path)
+{
+    std::ifstream file(path);
+
+    if (!file.is_open()) {
+        throw std::invalid_argument("Unable to read file <" + path + ">");
+    }
+
+    return file;
+}
