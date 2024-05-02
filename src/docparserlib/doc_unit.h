@@ -10,7 +10,6 @@
 
 namespace dp {
     struct DocUnit {
-        std::string Name;
         std::string Return;
         std::vector<std::string> Notes;
         std::vector<dp::DocParam> Params;
