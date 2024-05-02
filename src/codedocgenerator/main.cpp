@@ -13,7 +13,7 @@ int main()
         docData = parser.Parse();
         templater.SetDocs(docData);
         templater.CreateHtml("output.html");
-    } catch (std::invalid_argument iaex) {
+    } catch (const std::invalid_argument& iaex) {
         std::cerr << iaex.what() << std::endl;
     }
 
