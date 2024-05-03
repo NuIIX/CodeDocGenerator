@@ -1,8 +1,7 @@
 #include "c_code_parser.h"
 #include "file_utils.h"
-#include <iostream>
 
-dp::CCodeParser::CCodeParser(std::string cPathStr) : _cPath{cPathStr}
+dp::CCodeParser::CCodeParser(const std::string& cPathStr) : _cPath{cPathStr}
 {
 }
 
@@ -14,12 +13,7 @@ dp::CCodeParser::CCodeParser()
 {
 }
 
-std::string dp::CCodeParser::GetPath()
-{
-    return _cPath;
-}
-
-void dp::CCodeParser::SetPath(std::string cPathStr)
+void dp::CCodeParser::SetPath(const std::string& cPathStr)
 {
     _cPath = cPathStr;
 }
@@ -29,87 +23,121 @@ void dp::CCodeParser::SetPath(const char* cPath)
     _cPath = std::string(cPath);
 }
 
-std::vector<dp::DocUnit> dp::CCodeParser::GetDocs()
+const std::string& dp::CCodeParser::GetPath() const
+{
+    return _cPath;
+}
+
+const std::vector<dp::DocUnit>& dp::CCodeParser::GetDocs() const
 {
     return _docData;
 }
 
-std::vector<dp::DocUnit> dp::CCodeParser::Parse()
+const std::regex& dp::CCodeParser::GetCommentPattern() const
+{
+    return _commentPattern;
+}
+
+const std::regex& dp::CCodeParser::GetBriefPattern() const
+{
+    return _briefPattern;
+}
+
+const std::regex& dp::CCodeParser::GetParamPattern() const
+{
+    return _paramPattern;
+}
+
+const std::regex& dp::CCodeParser::GetReturnPattern() const
+{
+    return _returnPattern;
+}
+
+const std::regex& dp::CCodeParser::GetNotePattern() const
+{
+    return _notePattern;
+}
+
+const std::regex& dp::CCodeParser::GetThrowPattern() const
+{
+    return _throwPattern;
+}
+
+const std::regex& dp::CCodeParser::GetFunctionPattern() const
+{
+    return _functionPattern;
+}
+
+void dp::CCodeParser::Parse()
 {
     std::ifstream file = OpenFileRead(_cPath);
-
     std::string line;
-    std::smatch matches;
+    std::smatch fMatches, cMatches, pMatches, rMatches, nMatches, tMatches;
     DocUnit currentDocUnit;
 
     while (getline(file, line)) {
-        if (std::regex_search(line, matches, _commentPattern)) {
-            std::string comment = matches[1].str();
-
-            if (std::regex_search(comment, matches, _paramPattern)) {
-                DocParam param{matches[1].str(), matches[2].str()};
-
-                currentDocUnit.Params.push_back(param);
-            } else if (std::regex_search(comment, matches, _returnPattern)) {
-                currentDocUnit.Return = matches[1].str();
-            } else if (std::regex_search(comment, matches, _notePattern)) {
-                currentDocUnit.Notes.push_back(matches[1].str());
-            } else if (std::regex_search(comment, matches, _throwPattern)) {
-                currentDocUnit.Throws.push_back(matches[1].str());
-            }
-        } else if (std::regex_search(line, matches, _functionPattern)) {
+        if (std::regex_search(line, fMatches, _functionPattern)) {
             DocFunction function{
-                    matches[1].length() != 0,
-                    matches[2].str() + matches[3].str() + matches[4].str() + matches[5].str(),
-                    matches[6].str(),
-                    matches[7].str()};
+                    fMatches[1].length() != 0,
+                    fMatches[2].str() + fMatches[3].str() + fMatches[4].str() + fMatches[5].str(),
+                    fMatches[6].str(),
+                    fMatches[7].str()};
 
             currentDocUnit.Function = function;
-
             _docData.push_back(currentDocUnit);
             currentDocUnit = DocUnit();
+        } else if (std::regex_search(line, cMatches, _commentPattern)) {
+            std::string comment = cMatches[1].str();
+
+            if (std::regex_search(comment, pMatches, _paramPattern)) {
+                DocParam param{pMatches[1].str(), pMatches[2].str()};
+                currentDocUnit.Params.push_back(param);
+            } else if (std::regex_search(comment, rMatches, _returnPattern)) {
+                currentDocUnit.Return = rMatches[1].str();
+            } else if (std::regex_search(comment, nMatches, _notePattern)) {
+                currentDocUnit.Notes.push_back(nMatches[1].str());
+            } else if (std::regex_search(comment, tMatches, _throwPattern)) {
+                currentDocUnit.Throws.push_back(tMatches[1].str());
+            }
         }
     }
 
     file.close();
-    return _docData;
 }
 
-void dp::CCodeParser::PrintDocs()
+void dp::CCodeParser::PrintDocs(std::ostream& stream, const std::string& listDecorator)
 {
-    const std::string listMarker = "  ";
-
     for (const auto& docUnit : _docData) {
-        std::cout << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
-                  << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams
-                  << "]" << std::endl;
+        stream << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
+               << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]"
+               << std::endl;
 
-        std::cout << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
+        stream << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
 
         if (!docUnit.Params.empty()) {
-            std::cout << "Params: " << std::endl;
+            stream << "Params: " << std::endl;
 
             for (const auto& param : docUnit.Params) {
-                std::cout << listMarker << param.Name << ": " << param.Description << std::endl;
+                stream << listDecorator << param.Name << ": " << param.Description << std::endl;
             }
         }
 
         if (!docUnit.Notes.empty()) {
-            std::cout << "Notes: " << std::endl;
+            stream << "Notes: " << std::endl;
 
             for (const auto& note : docUnit.Notes) {
-                std::cout << listMarker << note << std::endl;
+                stream << listDecorator << note << std::endl;
             }
         }
 
         if (!docUnit.Throws.empty()) {
-            std::cout << "Throws: " << std::endl;
+            stream << "Throws: " << std::endl;
 
             for (const auto& throwStr : docUnit.Throws) {
-                std::cout << listMarker << throwStr << std::endl;
+                stream << listDecorator << throwStr << std::endl;
             }
         }
 
-        std::cout << std::endl;
+        stream << std::endl;
     }
 }
