@@ -14,6 +14,7 @@ namespace cdg {
         std::string _inPath;
         std::string _name;
         bool _saveFile = false;
+        bool _isOnlyHelp = false;
 
         void PrintHelp();
         void CheckArgsNext(const size_t&, const std::string&);
@@ -27,6 +28,7 @@ namespace cdg {
         const std::string& GetName() const;
         std::string GetFileName();
         const bool& GetSaveFileState() const;
+        const bool& IsOnlyHelp() const;
 
         void Parse();
     };

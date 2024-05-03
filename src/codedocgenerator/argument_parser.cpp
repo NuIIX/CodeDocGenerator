@@ -40,6 +40,11 @@ const bool& cdg::ArgumentParser::GetSaveFileState() const
     return _saveFile;
 }
 
+const bool& cdg::ArgumentParser::IsOnlyHelp() const
+{
+    return _isOnlyHelp;
+}
+
 void cdg::ArgumentParser::PrintHelp()
 {
     std::cout << std::endl
@@ -71,10 +76,10 @@ void cdg::ArgumentParser::CheckArgsNext(const size_t& it, const std::string& err
 void cdg::ArgumentParser::Parse()
 {
     if (_args.empty()) {
-        throw std::runtime_error("_args does not contain elements!");
+        throw std::runtime_error("Write -h for help");
     }
 
-    if (_args.size() == 1) {
+    if (_args.size() == 1 && _args.at(0) != "-h") {
         _inPath = _args.at(0);
         return;
     }
@@ -82,6 +87,8 @@ void cdg::ArgumentParser::Parse()
     for (size_t it = 0; it < _args.size(); it++) {
         if (_args.at(it) == "-h") {
             PrintHelp();
+            _isOnlyHelp = true;
+            return;
         } else if (_args.at(it) == "-f") {
             _saveFile = true;
         } else if (_args.at(it) == "-c") {
@@ -91,8 +98,10 @@ void cdg::ArgumentParser::Parse()
             CheckArgsNext(it, "Usage -o <path>");
             _outPath = _args.at(it + 1);
         } else if (_args.at(it) == "-n") {
-            CheckArgsNext(it, "Usage -n <path>");
+            CheckArgsNext(it, "Usage -n <name>");
             _name = _args.at(it + 1);
         }
     }
+
+    _isOnlyHelp = false;
 }

@@ -11,6 +11,10 @@ int main(int argc, char* argv[])
         cdg::ArgumentParser argsParser(std::vector<std::string>(argv + 1, argv + argc));
         argsParser.Parse();
 
+        if (argsParser.IsOnlyHelp()) {
+            return 0;
+        }
+
         if (argsParser.GetInPath().empty()) {
             throw std::invalid_argument("-c does not contain a path!");
         }
