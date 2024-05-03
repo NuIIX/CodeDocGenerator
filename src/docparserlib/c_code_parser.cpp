@@ -2,7 +2,7 @@
 #include "file_utils.h"
 #include <iostream>
 
-dp::CCodeParser::CCodeParser(std::string cPathStr) : _cPath{cPathStr}
+dp::CCodeParser::CCodeParser(const std::string& cPathStr) : _cPath{cPathStr}
 {
 }
 
@@ -14,14 +14,14 @@ dp::CCodeParser::CCodeParser()
 {
 }
 
-std::string dp::CCodeParser::GetPath()
-{
-    return _cPath;
-}
-
-void dp::CCodeParser::SetPath(std::string cPathStr)
+void dp::CCodeParser::SetPath(const std::string& cPathStr)
 {
     _cPath = cPathStr;
+}
+
+const std::string& dp::CCodeParser::GetPath() const
+{
+    return _cPath;
 }
 
 void dp::CCodeParser::SetPath(const char* cPath)
@@ -29,7 +29,7 @@ void dp::CCodeParser::SetPath(const char* cPath)
     _cPath = std::string(cPath);
 }
 
-std::vector<dp::DocUnit> dp::CCodeParser::GetDocs()
+const std::vector<dp::DocUnit>& dp::CCodeParser::GetDocs() const
 {
     return _docData;
 }
@@ -75,41 +75,39 @@ std::vector<dp::DocUnit> dp::CCodeParser::Parse()
     return _docData;
 }
 
-void dp::CCodeParser::PrintDocs()
+void dp::CCodeParser::PrintDocs(std::ostream& stream, const std::string& listDecorator)
 {
-    const std::string listMarker = "  ";
-
     for (const auto& docUnit : _docData) {
-        std::cout << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
-                  << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams
-                  << "]" << std::endl;
+        stream << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
+               << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]"
+               << std::endl;
 
-        std::cout << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
+        stream << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
 
         if (!docUnit.Params.empty()) {
-            std::cout << "Params: " << std::endl;
+            stream << "Params: " << std::endl;
 
             for (const auto& param : docUnit.Params) {
-                std::cout << listMarker << param.Name << ": " << param.Description << std::endl;
+                stream << listDecorator << param.Name << ": " << param.Description << std::endl;
             }
         }
 
         if (!docUnit.Notes.empty()) {
-            std::cout << "Notes: " << std::endl;
+            stream << "Notes: " << std::endl;
 
             for (const auto& note : docUnit.Notes) {
-                std::cout << listMarker << note << std::endl;
+                stream << listDecorator << note << std::endl;
             }
         }
 
         if (!docUnit.Throws.empty()) {
-            std::cout << "Throws: " << std::endl;
+            stream << "Throws: " << std::endl;
 
             for (const auto& throwStr : docUnit.Throws) {
-                std::cout << listMarker << throwStr << std::endl;
+                stream << listDecorator << throwStr << std::endl;
             }
         }
 
-        std::cout << std::endl;
+        stream << std::endl;
     }
 }

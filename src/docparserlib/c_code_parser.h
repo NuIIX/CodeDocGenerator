@@ -24,17 +24,17 @@ namespace dp {
                 R"((const\s+)?(unsigned\s+|signed\s+)?(long\s+)?(long\s+)?(\w+)\s+(\w+)\s*\((.*?)\)\s*[\;\{])");
 
     public:
-        CCodeParser(std::string);
+        CCodeParser(const std::string&);
         CCodeParser(const char*);
         CCodeParser();
 
-        std::string GetPath();
-        void SetPath(std::string);
+        void SetPath(const std::string&);
+        const std::string& GetPath() const;
         void SetPath(const char*);
-        std::vector<DocUnit> GetDocs();
+        const std::vector<DocUnit>& GetDocs() const;
 
         std::vector<DocUnit> Parse();
-        void PrintDocs();
+        void PrintDocs(std::ostream&, const std::string& = "  ");
     };
 }
 
