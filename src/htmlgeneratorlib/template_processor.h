@@ -29,8 +29,8 @@ namespace hg {
         std::string ProcessFuncTemplate(const dp::DocUnit&);
 
     public:
-        TemplateProcessor(std::vector<dp::DocUnit>&, const std::string);
-        TemplateProcessor(std::vector<dp::DocUnit>&);
+        TemplateProcessor(const std::vector<dp::DocUnit>&, const std::string&);
+        TemplateProcessor(const std::vector<dp::DocUnit>&);
         TemplateProcessor();
 
         void SetDocs(const std::vector<dp::DocUnit>&);

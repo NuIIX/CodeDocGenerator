@@ -2,12 +2,12 @@
 #include "file_utils.h"
 #include <regex>
 
-hg::TemplateProcessor::TemplateProcessor(std::vector<dp::DocUnit>& docData, const std::string head)
+hg::TemplateProcessor::TemplateProcessor(const std::vector<dp::DocUnit>& docData, const std::string& head)
     : _docData(docData), _head(head)
 {
 }
 
-hg::TemplateProcessor::TemplateProcessor(std::vector<dp::DocUnit>& docData) : _docData(docData)
+hg::TemplateProcessor::TemplateProcessor(const std::vector<dp::DocUnit>& docData) : _docData(docData)
 {
 }
 
