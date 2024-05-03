@@ -66,3 +66,129 @@ CTEST(docparserlib_test, pars_method_test)
     ASSERT_TRUE(exampleDocUnit.Function.Type == resultDocUnit.Function.Type);
     ASSERT_TRUE(exampleDocUnit.Function.VarParams == resultDocUnit.Function.VarParams);
 }
+
+CTEST(docparserlib_test, regex_comment_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex commentPattern = cCodeParser.GetCommentPattern();
+
+    std::string exampleReg = "///@throw std::invalid_argument If one of args not a number";
+    ASSERT_TRUE(std::regex_match(exampleReg, commentPattern));
+
+    exampleReg = "//@throw std::invalid_argument If one of args not a number";
+    ASSERT_FALSE(std::regex_match(exampleReg, commentPattern));
+
+    exampleReg = "//_/@throw std::invalid_argument If one of args not a number";
+    ASSERT_FALSE(std::regex_match(exampleReg, commentPattern));
+}
+
+CTEST(docparserlib_test, regex_brief_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex briefPattern = cCodeParser.GetBriefPattern();
+
+    std::string exampleReg = "///@brief Add";
+    ASSERT_TRUE(std::regex_search(exampleReg, briefPattern));
+
+    exampleReg = "//@brief Add";
+    ASSERT_TRUE(std::regex_search(exampleReg, briefPattern));
+
+    exampleReg = "//_/@brief Add";
+    ASSERT_TRUE(std::regex_search(exampleReg, briefPattern));
+
+    exampleReg = "/@bridef Add";
+    ASSERT_FALSE(std::regex_search(exampleReg, briefPattern));
+}
+
+CTEST(docparserlib_test, regex_param_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex paramPattern = cCodeParser.GetParamPattern();
+
+    std::string exampleReg = "///@param a First";
+    ASSERT_TRUE(std::regex_search(exampleReg, paramPattern));
+
+    exampleReg = "//@param a First";
+    ASSERT_TRUE(std::regex_search(exampleReg, paramPattern));
+
+    exampleReg = "//_/@param a First";
+    ASSERT_TRUE(std::regex_search(exampleReg, paramPattern));
+
+    exampleReg = "/@paradsm a First";
+    ASSERT_FALSE(std::regex_search(exampleReg, paramPattern));
+}
+
+CTEST(docparserlib_test, regex_return_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex returnPattern = cCodeParser.GetReturnPattern();
+
+    std::string exampleReg = "///@return Sum a and b";
+    ASSERT_TRUE(std::regex_search(exampleReg, returnPattern));
+
+    exampleReg = "//@return Sum a and b";
+    ASSERT_TRUE(std::regex_search(exampleReg, returnPattern));
+
+    exampleReg = "//_/@return Sum a and b";
+    ASSERT_TRUE(std::regex_search(exampleReg, returnPattern));
+
+    exampleReg = "/@returnds Sum a and b";
+    ASSERT_FALSE(std::regex_search(exampleReg, returnPattern));
+}
+
+CTEST(docparserlib_test, regex_note_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex notePattern = cCodeParser.GetNotePattern();
+
+    std::string exampleReg = "///@note notemonnte";
+    ASSERT_TRUE(std::regex_search(exampleReg, notePattern));
+
+    exampleReg = "//@note notemonnte";
+    ASSERT_TRUE(std::regex_search(exampleReg, notePattern));
+
+    exampleReg = "//_/@note notemonnte";
+    ASSERT_TRUE(std::regex_search(exampleReg, notePattern));
+
+    exampleReg = "/@nosdte notemonsdndsdfte";
+    ASSERT_FALSE(std::regex_search(exampleReg, notePattern));
+}
+
+CTEST(docparserlib_test, regex_throw_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex throwPattern = cCodeParser.GetThrowPattern();
+
+    std::string exampleReg = "///@throw std::invalid_argument If one of args not a number";
+    ASSERT_TRUE(std::regex_search(exampleReg, throwPattern));
+
+    exampleReg = "//@throw std::invalid_argument If one of args not a number";
+    ASSERT_TRUE(std::regex_search(exampleReg, throwPattern));
+
+    exampleReg = "//_/@throw std::invalid_argument If one of args not a number";
+    ASSERT_TRUE(std::regex_search(exampleReg, throwPattern));
+
+    exampleReg = "/@thrsdow std::invalid_argumensdfsdsdt If one of args not a number";
+    ASSERT_FALSE(std::regex_search(exampleReg, throwPattern));
+}
+
+CTEST(docparserlib_test, regex_function_test)
+{
+    dp::CCodeParser cCodeParser;
+    std::regex functionPattern = cCodeParser.GetFunctionPattern();
+
+    std::string exampleReg = "const signed long long int sum(int a, int b, int c);";
+    ASSERT_TRUE(std::regex_match(exampleReg, functionPattern));
+
+    exampleReg = "const signed long long int sum(int a, int b, int c;";
+    ASSERT_FALSE(std::regex_match(exampleReg, functionPattern));
+
+    exampleReg = "const signed long long int sum int a, int b, int c);";
+    ASSERT_FALSE(std::regex_match(exampleReg, functionPattern));
+
+    exampleReg = "const signed long long |(int sum int a, int b, int c);";
+    ASSERT_FALSE(std::regex_match(exampleReg, functionPattern));
+
+    exampleReg = "const signed long long int sum(int a, int b int c).;";
+    ASSERT_FALSE(std::regex_match(exampleReg, functionPattern));
+}
