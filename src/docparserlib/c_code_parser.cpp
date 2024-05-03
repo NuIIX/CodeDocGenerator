@@ -1,6 +1,5 @@
 #include "c_code_parser.h"
 #include "file_utils.h"
-#include <iostream>
 
 dp::CCodeParser::CCodeParser(const std::string& cPathStr) : _cPath{cPathStr}
 {
@@ -32,6 +31,41 @@ void dp::CCodeParser::SetPath(const char* cPath)
 const std::vector<dp::DocUnit>& dp::CCodeParser::GetDocs() const
 {
     return _docData;
+}
+
+const std::regex& dp::CCodeParser::GetCommentPattern() const
+{
+    return _commentPattern;
+}
+
+const std::regex& dp::CCodeParser::GetBriefPattern() const
+{
+    return _briefPattern;
+}
+
+const std::regex& dp::CCodeParser::GetParamPattern() const
+{
+    return _paramPattern;
+}
+
+const std::regex& dp::CCodeParser::GetReturnPattern() const
+{
+    return _returnPattern;
+}
+
+const std::regex& dp::CCodeParser::GetNotePattern() const
+{
+    return _notePattern;
+}
+
+const std::regex& dp::CCodeParser::GetThrowPattern() const
+{
+    return _throwPattern;
+}
+
+const std::regex& dp::CCodeParser::GetFunctionPattern() const
+{
+    return _functionPattern;
 }
 
 std::vector<dp::DocUnit> dp::CCodeParser::Parse()

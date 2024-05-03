@@ -32,6 +32,13 @@ namespace dp {
         const std::string& GetPath() const;
         void SetPath(const char*);
         const std::vector<DocUnit>& GetDocs() const;
+        const std::regex& GetCommentPattern() const;
+        const std::regex& GetBriefPattern() const;
+        const std::regex& GetParamPattern() const;
+        const std::regex& GetReturnPattern() const;
+        const std::regex& GetNotePattern() const;
+        const std::regex& GetThrowPattern() const;
+        const std::regex& GetFunctionPattern() const;
 
         std::vector<DocUnit> Parse();
         void PrintDocs(std::ostream&, const std::string& = "  ");
