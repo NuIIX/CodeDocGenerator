@@ -43,8 +43,8 @@ CTEST(docparserlib_test, pars_method_test)
                {true, "signed long long int", "sum2", "int a, int b, int c"}};
 
     dp::CCodeParser cCodeParser = dp::CCodeParser(path);
-
-    dp::DocUnit resultDocUnit = cCodeParser.Parse()[1];
+    cCodeParser.Parse();
+    dp::DocUnit resultDocUnit = cCodeParser.GetDocs().at(0);
 
     ASSERT_TRUE(exampleDocUnit.Return == resultDocUnit.Return);
 

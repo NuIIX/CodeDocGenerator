@@ -29,8 +29,8 @@ namespace dp {
         CCodeParser();
 
         void SetPath(const std::string&);
-        const std::string& GetPath() const;
         void SetPath(const char*);
+        const std::string& GetPath() const;
         const std::vector<DocUnit>& GetDocs() const;
         const std::regex& GetCommentPattern() const;
         const std::regex& GetBriefPattern() const;
@@ -40,7 +40,7 @@ namespace dp {
         const std::regex& GetThrowPattern() const;
         const std::regex& GetFunctionPattern() const;
 
-        std::vector<DocUnit> Parse();
+        void Parse();
         void PrintDocs(std::ostream&, const std::string& = "  ");
     };
 }
