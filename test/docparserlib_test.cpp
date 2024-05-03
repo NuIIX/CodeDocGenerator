@@ -34,7 +34,7 @@ CTEST(docparserlib_test, designer_test)
 
 CTEST(docparserlib_test, pars_method_test)
 {
-    std::string path = "example/docexample.c";
+    std::string path = "example/docexample.cpp";
     dp::DocUnit exampleDocUnit
             = {"Sum a and b",
                {"notemonnte", "note2"},
@@ -44,7 +44,7 @@ CTEST(docparserlib_test, pars_method_test)
 
     dp::CCodeParser cCodeParser = dp::CCodeParser(path);
     cCodeParser.Parse();
-    dp::DocUnit resultDocUnit = cCodeParser.GetDocs().at(0);
+    dp::DocUnit resultDocUnit = cCodeParser.GetDocs().at(1);
 
     ASSERT_TRUE(exampleDocUnit.Return == resultDocUnit.Return);
 
