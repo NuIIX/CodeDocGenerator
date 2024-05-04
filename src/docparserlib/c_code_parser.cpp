@@ -1,18 +1,25 @@
 #include "c_code_parser.h"
 #include "file_utils.h"
 
+/// @brief Конструктор
+/// @param cPathStr Ссылка на строку, содержащую путь до файла с кодом
 dp::CCodeParser::CCodeParser(const std::string& cPathStr) : _cPath{cPathStr}
 {
 }
 
+/// @brief Конструктор
+/// @param cPath Массив символов, содержащий путь до файла с кодом
 dp::CCodeParser::CCodeParser(const char* cPath) : _cPath{std::string(cPath)}
 {
 }
 
+/// @brief Конструктор
 dp::CCodeParser::CCodeParser()
 {
 }
 
+/// @brief Удаление лишних пробелов
+/// @param str Ссылка на строку, в которой нужно удалить лишние пробелы
 void dp::CCodeParser::RemoveSpaces(std::string& str)
 {
     std::regex_replace(str, std::regex("\\s+"), " ");
@@ -23,61 +30,84 @@ void dp::CCodeParser::RemoveSpaces(std::string& str)
     }
 }
 
+/// @brief Установка пути в строковом представлении до файла с кодом
+/// @param cPathStr Ссылка на строку, содержащую путь
 void dp::CCodeParser::SetPath(const std::string& cPathStr)
 {
     _cPath = cPathStr;
 }
 
+/// @brief Установка пути в символьном представлении до файла с кодом
+/// @param cPath Массив символов, содержащий путь
 void dp::CCodeParser::SetPath(const char* cPath)
 {
     _cPath = std::string(cPath);
 }
 
+/// @brief Получение пути
+/// @return const std::string& Путь до файла с кодом
 const std::string& dp::CCodeParser::GetPath() const
 {
     return _cPath;
 }
 
+/// @brief Получение документации
+/// @return const std::vector<dp::DocUnit>& Документации
 const std::vector<dp::DocUnit>& dp::CCodeParser::GetDocs() const
 {
     return _docData;
 }
 
+/// @brief Получение регулярного выражения комментария
+/// @return const std::regex& Регулярное выражение комментария
 const std::regex& dp::CCodeParser::GetCommentPattern() const
 {
     return _commentPattern;
 }
 
+/// @brief Получение регулярного выражения краткого описания
+/// @return const std::regex& Регулярное выражение краткого описания
 const std::regex& dp::CCodeParser::GetBriefPattern() const
 {
     return _briefPattern;
 }
 
+/// @brief Получение регулярного выражения параметра
+/// @return const std::regex& Регулярное выражение параметра
 const std::regex& dp::CCodeParser::GetParamPattern() const
 {
     return _paramPattern;
 }
 
+/// @brief Получение регулярного выражения возвращаемого значения
+/// @return const std::regex& Регулярное выражение возвращаемого значения
 const std::regex& dp::CCodeParser::GetReturnPattern() const
 {
     return _returnPattern;
 }
 
+/// @brief Получение регулярного выражения заметки
+/// @return const std::regex& Регулярное выражение заметки
 const std::regex& dp::CCodeParser::GetNotePattern() const
 {
     return _notePattern;
 }
 
+/// @brief Получение регулярного выражения исключения
+/// @return const std::regex& Регулярное выражение исключения
 const std::regex& dp::CCodeParser::GetThrowPattern() const
 {
     return _throwPattern;
 }
 
+/// @brief Получение регулярного выражения функции
+/// @return const std::regex& Регулярное выражение функции
 const std::regex& dp::CCodeParser::GetFunctionPattern() const
 {
     return _functionPattern;
 }
 
+/// @brief Парсинг документации
 void dp::CCodeParser::Parse()
 {
     std::ifstream file = OpenFileRead(_cPath);
@@ -117,12 +147,15 @@ void dp::CCodeParser::Parse()
     file.close();
 }
 
+/// @brief Вывод документации
+/// @param stream Поток вывода
+/// @param listDecorator Маркер списка
 void dp::CCodeParser::PrintDocs(std::ostream& stream, const std::string& listDecorator)
 {
     for (const auto& docUnit : _docData) {
-        stream << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
-               << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]"
-               << std::endl;
+        stream << "Function: "
+               << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] [" << docUnit.Function.Type << "] ["
+               << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]" << std::endl;
 
         stream << (docUnit.Brief.length() != 0 ? "Brief: " + docUnit.Brief + "\n" : "");
 

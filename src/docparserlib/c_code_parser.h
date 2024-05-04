@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace dp {
+    /// @brief Парсер документации из кода
     class CCodeParser {
     private:
         std::string _cPath = "";

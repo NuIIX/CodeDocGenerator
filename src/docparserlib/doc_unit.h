@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace dp {
+    /// @brief Единица документации
     struct DocUnit {
         std::string Brief;
         std::string Return;

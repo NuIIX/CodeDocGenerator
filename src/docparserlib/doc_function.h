@@ -6,6 +6,7 @@
 #include <string>
 
 namespace dp {
+    /// @brief Информация о функции
     struct DocFunction {
         bool isConst;
         std::string Type;
