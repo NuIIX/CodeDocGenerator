@@ -6,6 +6,7 @@
 #include <string>
 
 namespace dp {
+    /// @brief Параметр функции
     struct DocParam {
         std::string Name;
         std::string Description;
