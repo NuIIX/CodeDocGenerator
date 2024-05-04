@@ -22,7 +22,7 @@ namespace dp {
         const std::regex _notePattern = std::regex(R"(@note\s+(.+))");
         const std::regex _throwPattern = std::regex(R"(@throw\s+(.+))");
         const std::regex _functionPattern
-                = std::regex(R"(\s*(const)?\s*(signed|unsigned)?\s*(long)?\s*(long)?\s*(\S*?)\s*(\S*)\s*\((.*?)\))");
+                = std::regex(R"(\s*(const)?\s*(signed|unsigned)?\s*(long)?\s*(long)?\s*(\w+)\s*(\w+)\s*\((.*?)\))");
 
         void RemoveSpaces(std::string&);
 
