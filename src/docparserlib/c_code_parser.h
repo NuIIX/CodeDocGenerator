@@ -20,8 +20,10 @@ namespace dp {
         const std::regex _returnPattern = std::regex(R"(@return\s+(.+))");
         const std::regex _notePattern = std::regex(R"(@note\s+(.+))");
         const std::regex _throwPattern = std::regex(R"(@throw\s+(.+))");
-        const std::regex _functionPattern = std::regex(
-                R"((const\s+)?(unsigned\s+|signed\s+)?(long\s+)?(long\s+)?(\w+)\s+(\w+)\s*\((.*?)\)\s*[\;\{])");
+        const std::regex _functionPattern
+                = std::regex(R"(\s*(const)?\s*(signed|unsigned)?\s*(long)?\s*(long)?\s*(\w+)\s*(\w+)\s*\((.*?)\))");
+
+        void RemoveSpaces(std::string&);
 
     public:
         CCodeParser(const std::string&);
