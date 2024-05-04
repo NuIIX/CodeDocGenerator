@@ -47,26 +47,7 @@ CTEST(docparserlib_test, pars_method_test)
     cCodeParser.Parse();
     dp::DocUnit resultDocUnit = cCodeParser.GetDocs().at(1);
 
-    ASSERT_TRUE(exampleDocUnit.Return == resultDocUnit.Return);
-
-    for (size_t i = 0; i < resultDocUnit.Notes.size(); i++) {
-        ASSERT_TRUE(exampleDocUnit.Notes[i] == resultDocUnit.Notes[i]);
-    }
-
-    for (size_t i = 0; i < resultDocUnit.Params.size(); i++) {
-        ASSERT_TRUE(exampleDocUnit.Params[i].Name == resultDocUnit.Params[i].Name);
-        ASSERT_TRUE(exampleDocUnit.Params[i].Description == resultDocUnit.Params[i].Description);
-    }
-
-    for (size_t i = 0; i < resultDocUnit.Throws.size(); i++) {
-        ASSERT_TRUE(exampleDocUnit.Throws[i] == resultDocUnit.Throws[i]);
-    }
-
-    ASSERT_TRUE(exampleDocUnit.Brief == resultDocUnit.Brief);
-    ASSERT_TRUE(exampleDocUnit.Function.isConst == resultDocUnit.Function.isConst);
-    ASSERT_TRUE(exampleDocUnit.Function.Name == resultDocUnit.Function.Name);
-    ASSERT_TRUE(exampleDocUnit.Function.Type == resultDocUnit.Function.Type);
-    ASSERT_TRUE(exampleDocUnit.Function.VarParams == resultDocUnit.Function.VarParams);
+    ASSERT_TRUE(exampleDocUnit == resultDocUnit);
 }
 
 CTEST(docparserlib_test, regex_comment_test)
