@@ -84,7 +84,7 @@ std::string hg::TemplateProcessor::ConvertListToHtml(const std::string& name, co
     std::string htmlListStr = "<h2>" + name + "</h2>\n";
 
     for (const auto& item : listItems) {
-        htmlListStr.append("<p>").append(item).append("</br></p>\n");
+        htmlListStr.append("<p>").append(item).append("</p>\n");
     }
 
     return htmlListStr;
@@ -106,6 +106,7 @@ std::string hg::TemplateProcessor::ProcessBlockTemplate(const dp::DocUnit& docUn
     std::map<std::string, std::string> tagToValueMap
             = {{"FuncName", docUnit.Function.Name},
                {"FuncFull", GetFunctionStr(docUnit.Function)},
+               {"FuncBrief", docUnit.Brief},
                {"FuncData", ProcessFuncTemplate(docUnit)}};
 
     std::string blocks = ReplaceTags(blockContent, tagToValueMap);
