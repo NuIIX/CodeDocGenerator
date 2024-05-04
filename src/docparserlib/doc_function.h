@@ -11,6 +11,11 @@ namespace dp {
         std::string Type;
         std::string Name;
         std::string VarParams;
+
+        bool operator==(const DocFunction& other) const
+        {
+            return isConst == other.isConst && Type == other.Type && Name == other.Name && VarParams == other.VarParams;
+        }
     };
 }
 
