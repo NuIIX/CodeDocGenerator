@@ -36,7 +36,8 @@ CTEST(docparserlib_test, pars_method_test)
 {
     std::string path = "example/docexample.cpp";
     dp::DocUnit exampleDocUnit
-            = {"Sum a and b",
+            = {"Add",
+               "Sum a and b",
                {"notemonnte", "note2"},
                {{"a", "First"}, {"b", "Second"}, {"c", "Third"}},
                {"std::invalid_argument If one of args not a number"},
@@ -61,6 +62,7 @@ CTEST(docparserlib_test, pars_method_test)
         ASSERT_TRUE(exampleDocUnit.Throws[i] == resultDocUnit.Throws[i]);
     }
 
+    ASSERT_TRUE(exampleDocUnit.Brief == resultDocUnit.Brief);
     ASSERT_TRUE(exampleDocUnit.Function.isConst == resultDocUnit.Function.isConst);
     ASSERT_TRUE(exampleDocUnit.Function.Name == resultDocUnit.Function.Name);
     ASSERT_TRUE(exampleDocUnit.Function.Type == resultDocUnit.Function.Type);
