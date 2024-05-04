@@ -82,7 +82,7 @@ void dp::CCodeParser::Parse()
 {
     std::ifstream file = OpenFileRead(_cPath);
     std::string line;
-    std::smatch fMatches, cMatches, pMatches, rMatches, nMatches, tMatches;
+    std::smatch fMatches, bMatches, cMatches, pMatches, rMatches, nMatches, tMatches;
     DocUnit currentDocUnit;
 
     while (getline(file, line)) {
@@ -99,8 +99,9 @@ void dp::CCodeParser::Parse()
             currentDocUnit = DocUnit();
         } else if (std::regex_search(line, cMatches, _commentPattern)) {
             std::string comment = cMatches[1].str();
-
-            if (std::regex_search(comment, pMatches, _paramPattern)) {
+            if (std::regex_search(comment, bMatches, _briefPattern)) {
+                currentDocUnit.Brief = bMatches[1].str();
+            } else if (std::regex_search(comment, pMatches, _paramPattern)) {
                 DocParam param{pMatches[1].str(), pMatches[2].str()};
                 currentDocUnit.Params.push_back(param);
             } else if (std::regex_search(comment, rMatches, _returnPattern)) {
@@ -122,6 +123,8 @@ void dp::CCodeParser::PrintDocs(std::ostream& stream, const std::string& listDec
         stream << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
                << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]"
                << std::endl;
+
+        stream << (docUnit.Brief.length() != 0 ? "Brief: " + docUnit.Brief + "\n" : "");
 
         stream << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
 
