@@ -13,6 +13,16 @@ dp::CCodeParser::CCodeParser()
 {
 }
 
+void dp::CCodeParser::RemoveSpaces(std::string& str)
+{
+    std::regex_replace(str, std::regex("\\s+"), " ");
+    size_t firstNonSpace = str.find_first_not_of(' ');
+
+    if (firstNonSpace != std::string::npos) {
+        str = str.substr(firstNonSpace);
+    }
+}
+
 void dp::CCodeParser::SetPath(const std::string& cPathStr)
 {
     _cPath = cPathStr;
@@ -79,10 +89,11 @@ void dp::CCodeParser::Parse()
         if (std::regex_search(line, fMatches, _functionPattern)) {
             DocFunction function{
                     fMatches[1].length() != 0,
-                    fMatches[2].str() + fMatches[3].str() + fMatches[4].str() + fMatches[5].str(),
+                    fMatches[2].str() + " " + fMatches[3].str() + " " + fMatches[4].str() + " " + fMatches[5].str(),
                     fMatches[6].str(),
                     fMatches[7].str()};
 
+            RemoveSpaces(function.Type);
             currentDocUnit.Function = function;
             _docData.push_back(currentDocUnit);
             currentDocUnit = DocUnit();

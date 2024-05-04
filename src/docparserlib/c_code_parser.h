@@ -23,6 +23,8 @@ namespace dp {
         const std::regex _functionPattern
                 = std::regex(R"(\s*(const)?\s*(signed|unsigned)?\s*(long)?\s*(long)?\s*(\w+)\s*(\w+)\s*\((.*?)\))");
 
+        void RemoveSpaces(std::string&);
+
     public:
         CCodeParser(const std::string&);
         CCodeParser(const char*);
