@@ -35,6 +35,11 @@ std::string cdg::ArgumentParser::GetFileName()
     return onlyFilename;
 }
 
+const std::string& cdg::ArgumentParser::GetDecorator() const
+{
+    return _decorator;
+}
+
 const bool& cdg::ArgumentParser::GetSaveFileState() const
 {
     return _saveFile;
@@ -94,6 +99,8 @@ void cdg::ArgumentParser::Parse()
             return;
         } else if (_args.at(it) == "-f") {
             _saveFile = true;
+            CheckArgsNext(it, "Usage -f <decorator>");
+            _decorator = _args.at(it + 1);
         } else if (_args.at(it) == "-c") {
             CheckArgsNext(it, "Usage -c <path>");
             _inPath = _args.at(it + 1);

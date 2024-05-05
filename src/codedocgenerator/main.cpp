@@ -7,6 +7,11 @@
 
 int main(int argc, char* argv[])
 {
+    const std::string docsPostfix = "_docs";
+    const std::string outFileExt = ".txt";
+    const std::string outDocsExt = ".html";
+    const std::string errorHint = "Error: ";
+
     try {
         cdg::ArgumentParser argsParser(std::vector<std::string>(argv + 1, argv + argc));
         argsParser.Parse();
@@ -22,19 +27,19 @@ int main(int argc, char* argv[])
         std::string outPath;
 
         if (!argsParser.GetOutPath().empty()) {
-            outPath = argsParser.GetOutPath() + "_docs";
+            outPath = argsParser.GetOutPath() + docsPostfix;
         } else if (!argsParser.GetName().empty()) {
-            outPath = argsParser.GetName() + "_docs";
+            outPath = argsParser.GetName() + docsPostfix;
         } else {
-            outPath = argsParser.GetFileName() + "_docs";
+            outPath = argsParser.GetFileName() + docsPostfix;
         }
 
         dp::CCodeParser codeParser(argsParser.GetInPath());
         codeParser.Parse();
 
         if (argsParser.GetSaveFileState()) {
-            std::ofstream outTextFile = hg::OpenFileWrite(outPath + ".txt");
-            codeParser.PrintDocs(outTextFile);
+            std::ofstream outTextFile = hg::OpenFileWrite(outPath + outFileExt);
+            codeParser.PrintDocs(outTextFile, argsParser.GetDecorator());
             outTextFile.close();
         }
 
@@ -44,15 +49,15 @@ int main(int argc, char* argv[])
             templateProcessor.SetHead(argsParser.GetName());
         }
 
-        templateProcessor.CreateHtml(outPath + ".html");
+        templateProcessor.CreateHtml(outPath + outDocsExt);
     } catch (const std::out_of_range& oorex) {
-        std::cerr << "Error: " << oorex.what();
+        std::cerr << errorHint << oorex.what() << std::endl;
         return 1;
     } catch (const std::runtime_error& reex) {
-        std::cerr << "Error: " << reex.what();
+        std::cerr << errorHint << reex.what() << std::endl;
         return 1;
     } catch (const std::invalid_argument& iaex) {
-        std::cerr << "Error: " << iaex.what();
+        std::cerr << errorHint << iaex.what() << std::endl;
         return 1;
     }
 
