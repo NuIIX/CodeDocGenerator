@@ -9,6 +9,7 @@
 #include <vector>
 
 namespace hg {
+    /// @brief Генератор html файлов из документации с использованием шаблонов
     class TemplateProcessor {
     private:
         std::vector<dp::DocUnit> _docData;
