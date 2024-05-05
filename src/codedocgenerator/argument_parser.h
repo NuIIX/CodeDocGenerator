@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ARGUMENT_PARSER_H
-#define ARGUMENT_PARSER_H
+#ifndef ARGUMENTPARSER_H
+#define ARGUMENTPARSER_H
 
 #include <string>
 #include <vector>
@@ -34,4 +34,4 @@ namespace cdg {
     };
 }
 
-#endif // !ARGUMENT_PARSER_H
+#endif // !ARGUMENTPARSER_H
