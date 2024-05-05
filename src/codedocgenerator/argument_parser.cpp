@@ -57,13 +57,16 @@ void cdg::ArgumentParser::PrintHelp()
               << std::endl
               << "Commands:" << std::endl
               << std::endl
-              << "  cdg <path> : Generating an HTML file using the specified code path  (required)" << std::endl
-              << "  -c         : Specifying the path to the code                        (required)" << std::endl
-              << "  -f         : Additionally save as a text file                       (optional)" << std::endl
-              << "  -o  <path> : Specifying the path for the HTML output file           (optional)" << std::endl
-              << "  -h         : Displaying a hint for all commands                     (optional)" << std::endl
+              << "  cdg <path>     : Generating an HTML file using the specified code path  (required)" << std::endl
+              << "  -c <path>      : Specifying the path to the code                        (required)" << std::endl
+              << "  -f <decorator> : Additionally save as a text file                       (optional)" << std::endl
+              << "  -o <path>      : Specifying the path for the HTML output file           (optional)" << std::endl
+              << "  -n <name>      : Specifying the title of the documentation              (optional)" << std::endl
+              << "  -h             : Displaying a hint for all commands                     (optional)" << std::endl
               << std::endl
-              << "Where <path> is a path without specifying an extension" << std::endl;
+              << "<path>      - path without specifying an extension (except -c <path>)" << std::endl
+              << "<decorator> - optional list marker" << std::endl
+              << "<name>      - the title of the documentation (and the name of the file)" << std::endl;
 }
 
 void cdg::ArgumentParser::CheckArgsNext(const size_t& it, const std::string& errorWhat)
