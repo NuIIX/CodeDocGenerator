@@ -1,7 +1,8 @@
-APP_NAME = codedocgenerator
+APP_NAME = cdg
+TEST_NAME = cdg_test
+MAIN_NAME = codedocgenerator
 DOC_LIB_NAME = docparserlib
 HTML_LIB_NAME = htmlgeneratorlib
-TEST_NAME = main_test
 
 BIN_DIR = bin
 OBJ_DIR = obj
@@ -22,7 +23,7 @@ TEST_PATH = $(BIN_DIR)/$(TEST_NAME)
 
 SRC_EXT = cpp
 
-APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.$(SRC_EXT)')
+APP_SOURCES = $(shell find $(SRC_DIR)/$(MAIN_NAME) -name '*.$(SRC_EXT)')
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
 
 DOC_LIB_NAMES = $(DOC_LIB_NAME)

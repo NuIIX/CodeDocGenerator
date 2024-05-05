@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ARGUMENT_PARSER_H
-#define ARGUMENT_PARSER_H
+#ifndef ARGUMENTPARSER_H
+#define ARGUMENTPARSER_H
 
 #include <string>
 #include <vector>
@@ -13,6 +13,7 @@ namespace cdg {
         std::string _outPath;
         std::string _inPath;
         std::string _name;
+        std::string _decorator;
         bool _saveFile = false;
         bool _isOnlyHelp = false;
 
@@ -27,6 +28,7 @@ namespace cdg {
         const std::string& GetInPath() const;
         const std::string& GetName() const;
         std::string GetFileName();
+        const std::string& GetDecorator() const;
         const bool& GetSaveFileState() const;
         const bool& IsOnlyHelp() const;
 
@@ -34,4 +36,4 @@ namespace cdg {
     };
 }
 
-#endif // !ARGUMENT_PARSER_H
+#endif // !ARGUMENTPARSER_H
