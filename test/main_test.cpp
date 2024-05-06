@@ -1,6 +1,6 @@
 #define CTEST_MAIN
 #define CTEST_SEGFAULT
-#define __STDC_FORMAT_MACROS
+
 #include <cinttypes>
 #include <ctest.h>
 

@@ -11,10 +11,10 @@ namespace dp {
         std::string Name;
         std::string Description;
 
-        bool operator==(const DocParam& other) const
-        {
-            return Name == other.Name && Description == other.Description;
-        }
+        DocParam();
+        DocParam(const std::string&, const std::string&);
+        bool operator==(const DocParam&) const;
+        std::string ToString() const;
     };
 }
 
