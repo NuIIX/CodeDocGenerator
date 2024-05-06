@@ -117,13 +117,12 @@ void dp::CCodeParser::Parse()
 
     while (getline(file, line)) {
         if (std::regex_search(line, fMatches, _functionPattern)) {
-            if (!currentDocUnit.Brief.empty() || !currentDocUnit.Params.empty() || !currentDocUnit.Return.empty()
-                || !currentDocUnit.Notes.empty() || !currentDocUnit.Throws.empty()) {
-                DocFunction function{
+            if (!currentDocUnit.IsEmpty()) {
+                DocFunction function(
                         fMatches[1].length() != 0,
                         fMatches[2].str() + " " + fMatches[3].str() + " " + fMatches[4].str() + " " + fMatches[5].str(),
                         fMatches[6].str(),
-                        fMatches[7].str()};
+                        fMatches[7].str());
 
                 RemoveSpaces(function.Type);
                 currentDocUnit.Function = function;
@@ -156,38 +155,6 @@ void dp::CCodeParser::Parse()
 void dp::CCodeParser::PrintDocs(std::ostream& stream, const std::string& listDecorator)
 {
     for (const auto& docUnit : _docData) {
-        stream << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
-               << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]"
-               << std::endl;
-
-        stream << (docUnit.Brief.length() != 0 ? "Brief: " + docUnit.Brief + "\n" : "");
-
-        stream << (docUnit.Return.length() != 0 ? "Return: " + docUnit.Return + "\n" : "");
-
-        if (!docUnit.Params.empty()) {
-            stream << "Params: " << std::endl;
-
-            for (const auto& param : docUnit.Params) {
-                stream << listDecorator << param.Name << ": " << param.Description << std::endl;
-            }
-        }
-
-        if (!docUnit.Notes.empty()) {
-            stream << "Notes: " << std::endl;
-
-            for (const auto& note : docUnit.Notes) {
-                stream << listDecorator << note << std::endl;
-            }
-        }
-
-        if (!docUnit.Throws.empty()) {
-            stream << "Throws: " << std::endl;
-
-            for (const auto& throwStr : docUnit.Throws) {
-                stream << listDecorator << throwStr << std::endl;
-            }
-        }
-
-        stream << std::endl;
+        stream << docUnit.ToString(listDecorator) << std::endl;
     }
 }

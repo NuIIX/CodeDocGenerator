@@ -22,7 +22,6 @@ namespace hg {
         static std::string ReplaceTags(const std::string&, const std::map<std::string, std::string>&);
         static std::string ReplaceTag(const std::string&, const std::string&, const std::string&);
 
-        std::string GetFunctionStr(const dp::DocFunction&);
         std::string ConvertListToHtml(const std::string&, const std::vector<std::string>&);
         std::vector<std::string> ConvertDocParamsToStrings(const std::vector<dp::DocParam>&);
 

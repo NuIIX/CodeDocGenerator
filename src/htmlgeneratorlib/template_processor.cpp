@@ -83,19 +83,6 @@ hg::TemplateProcessor::ReplaceTag(const std::string& shmtl, const std::string& t
     return result;
 }
 
-/// @brief Получение строкового представления для dp::DocFunction
-/// @param func Функция
-/// @return std::string Строковое представление функции
-/// @todo Вынести эту функцию в dp::DocFunction
-std::string hg::TemplateProcessor::GetFunctionStr(const dp::DocFunction& func)
-{
-    std::string isConstStr = func.isConst ? "[const]" : "";
-
-    std::string result = isConstStr + "[" + func.Type + "][" + func.Name + "][" + func.VarParams + "] ";
-
-    return result;
-}
-
 /// @brief Конвертация списка в html представление
 /// @param name Заголовок списка
 /// @param listItems Элементы списка
@@ -127,7 +114,7 @@ std::vector<std::string> hg::TemplateProcessor::ConvertDocParamsToStrings(const 
     std::vector<std::string> docParamsStr;
 
     for (const auto& param : params) {
-        docParamsStr.push_back(param.Name + ": " + param.Description);
+        docParamsStr.push_back(param.ToString());
     }
 
     return docParamsStr;
@@ -141,7 +128,7 @@ std::string hg::TemplateProcessor::ProcessBlockTemplate(const dp::DocUnit& docUn
 {
     std::map<std::string, std::string> tagToValueMap
             = {{"FuncName", docUnit.Function.Name},
-               {"FuncFull", GetFunctionStr(docUnit.Function)},
+               {"FuncFull", docUnit.Function.ToString()},
                {"FuncBrief", docUnit.Brief},
                {"FuncData", ProcessFuncTemplate(docUnit)}};
 
