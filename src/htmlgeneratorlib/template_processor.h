@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <regex>
 
 namespace hg {
     /// @brief Генератор html файлов из документации с использованием шаблонов
@@ -16,11 +17,14 @@ namespace hg {
         std::string _head;
 
         const std::string _templateMainPath = "data/main_template.html";
-        const std::string _templateListItemPath = "data/list_item.html";
         const std::string _templateBlockPath = "data/block_template.html";
 
-        static std::string ReplaceTags(const std::string&, const std::map<std::string, std::string>&);
-        static std::string ReplaceTag(const std::string&, const std::string&, const std::string&);
+        const std::string _leftBracket = R"(\{\{)";
+        const std::string _rightBracket = R"(\}\})";
+        const std::regex _tagPattern = std::regex(_leftBracket + R"(\s*(.*)\s*)" + _rightBracket);
+
+        std::string ReplaceTags(const std::string&, const std::map<std::string, std::string>&);
+        std::string ReplaceTag(const std::string&, const std::string&, const std::string&);
 
         std::string ConvertListToHtml(const std::string&, const std::vector<std::string>&);
         std::vector<std::string> ConvertDocParamsToStrings(const std::vector<dp::DocParam>&);

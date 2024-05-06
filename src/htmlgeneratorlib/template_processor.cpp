@@ -1,6 +1,5 @@
 #include "template_processor.h"
 #include "file_utils.h"
-#include <regex>
 
 /// @brief Конструктор
 /// @param docData Документация
@@ -50,9 +49,8 @@ std::string
 hg::TemplateProcessor::ReplaceTags(const std::string& shmtl, const std::map<std::string, std::string>& tagToValueMap)
 {
     std::string output = shmtl;
-    const std::regex tagPattern(R"(\{\{\s*(.*)\s*\}\})");
 
-    std::sregex_iterator it(shmtl.begin(), shmtl.end(), tagPattern);
+    std::sregex_iterator it(shmtl.begin(), shmtl.end(), _tagPattern);
     std::sregex_iterator end;
 
     for (; it != end; ++it) {
@@ -75,7 +73,7 @@ hg::TemplateProcessor::ReplaceTags(const std::string& shmtl, const std::map<std:
 std::string
 hg::TemplateProcessor::ReplaceTag(const std::string& shmtl, const std::string& tag, const std::string& input)
 {
-    std::regex tagPattern(R"(\{\{)" + tag + R"(\}\})");
+    std::regex tagPattern(_leftBracket + tag + _rightBracket);
 
     std::string result = shmtl;
     result = std::regex_replace(result, tagPattern, input);
