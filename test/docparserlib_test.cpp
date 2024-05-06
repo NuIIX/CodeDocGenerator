@@ -30,19 +30,19 @@ CTEST(docparserlib_test, constructor_test)
 
 CTEST(docparserlib_test, pars_method_test)
 {
-    std::string actualPath = "example/docexample.cpp";
-    dp::DocFunction expectedFunction(true, "signed long long int", "sum2", "int a, int b, int c");
+    std::string actualPath = "example/test/code_example_test.cpp";
+    dp::DocFunction expectedFunction(false, "std::ofstream", "hg::OpenFileWrite", "const std::string& path");
     dp::DocUnit expectedDocUnit(
-            "Add",
-            "Sum a and b",
-            {"notemonnte", "note2"},
-            {{"a", "First"}, {"b", "Second"}, {"c", "Third"}},
-            {"std::invalid_argument If one of args not a number"},
+            "Запись файла",
+            "std::ofstream Поток на запись в файл",
+            {"Примечание"},
+            {dp::DocParam("path", "Путь к файлу")},
+            {"std::invalid_argument Если файл нельзя открыть"},
             expectedFunction);
 
     dp::CCodeParser parser(actualPath);
     parser.Parse();
-    dp::DocUnit actualDocUnit = parser.GetDocs().at(1);
+    dp::DocUnit actualDocUnit = parser.GetDocs().at(0);
 
     ASSERT_TRUE(expectedDocUnit == actualDocUnit);
 }
