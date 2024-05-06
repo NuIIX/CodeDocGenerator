@@ -117,16 +117,19 @@ void dp::CCodeParser::Parse()
 
     while (getline(file, line)) {
         if (std::regex_search(line, fMatches, _functionPattern)) {
-            DocFunction function{
-                    fMatches[1].length() != 0,
-                    fMatches[2].str() + " " + fMatches[3].str() + " " + fMatches[4].str() + " " + fMatches[5].str(),
-                    fMatches[6].str(),
-                    fMatches[7].str()};
+            if (!currentDocUnit.Brief.empty() || !currentDocUnit.Params.empty() || !currentDocUnit.Return.empty()
+                || !currentDocUnit.Notes.empty() || !currentDocUnit.Throws.empty()) {
+                DocFunction function{
+                        fMatches[1].length() != 0,
+                        fMatches[2].str() + " " + fMatches[3].str() + " " + fMatches[4].str() + " " + fMatches[5].str(),
+                        fMatches[6].str(),
+                        fMatches[7].str()};
 
-            RemoveSpaces(function.Type);
-            currentDocUnit.Function = function;
-            _docData.push_back(currentDocUnit);
-            currentDocUnit = DocUnit();
+                RemoveSpaces(function.Type);
+                currentDocUnit.Function = function;
+                _docData.push_back(currentDocUnit);
+                currentDocUnit = DocUnit();
+            }
         } else if (std::regex_search(line, cMatches, _commentPattern)) {
             std::string comment = cMatches[1].str();
             if (std::regex_search(comment, bMatches, _briefPattern)) {
@@ -153,9 +156,9 @@ void dp::CCodeParser::Parse()
 void dp::CCodeParser::PrintDocs(std::ostream& stream, const std::string& listDecorator)
 {
     for (const auto& docUnit : _docData) {
-        stream << "Function: "
-               << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] [" << docUnit.Function.Type << "] ["
-               << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]" << std::endl;
+        stream << "Function: " << "[" << (docUnit.Function.isConst ? "const" : "not const") << "] ["
+               << docUnit.Function.Type << "] [" << docUnit.Function.Name << "] [" << docUnit.Function.VarParams << "]"
+               << std::endl;
 
         stream << (docUnit.Brief.length() != 0 ? "Brief: " + docUnit.Brief + "\n" : "");
 
