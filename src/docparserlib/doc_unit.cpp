@@ -1,17 +1,25 @@
 #include "doc_unit.h"
 
+/// @brief Конструктор
 dp::DocUnit::DocUnit()
 {
 }
 
+/// @brief Конструктор
+/// @param brief Описание
+/// @param returnStr Возврат
+/// @param notes Заметки
+/// @param params Параметры
+/// @param throws Исключения
+/// @param function Функция
 dp::DocUnit::DocUnit(
         const std::string& brief,
         const std::string& returnStr,
         const std::vector<std::string>& notes,
         const std::vector<dp::DocParam>& params,
         const std::vector<std::string>& throws,
-        const dp::DocFunction& functionStr)
-    : Brief(brief), Return(returnStr), Notes(notes), Params(params), Throws(throws), Function(functionStr)
+        const dp::DocFunction& function)
+    : Brief(brief), Return(returnStr), Notes(notes), Params(params), Throws(throws), Function(function)
 {
 }
 
@@ -23,11 +31,16 @@ bool dp::DocUnit::operator==(const DocUnit& other) const
             && std::equal(Throws.begin(), Throws.end(), other.Throws.begin());
 }
 
+/// @brief Проверка на пустоту
+/// @return true, если все поля в документе пусты
 bool dp::DocUnit::IsEmpty() const
 {
     return Brief.empty() && Return.empty() && Notes.empty() && Params.empty() && Throws.empty() && Function.IsEmpty();
 }
 
+/// @brief Конвертация
+/// @param decorator Маркер списка
+/// @return std::string Строка с документацией
 std::string dp::DocUnit::ToString(const std::string& decorator) const
 {
     std::string docUnitStr;
