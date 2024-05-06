@@ -8,15 +8,16 @@
 namespace dp {
     /// @brief Информация о функции
     struct DocFunction {
-        bool isConst;
+        bool IsConst = false;
         std::string Type;
         std::string Name;
         std::string VarParams;
 
-        bool operator==(const DocFunction& other) const
-        {
-            return isConst == other.isConst && Type == other.Type && Name == other.Name && VarParams == other.VarParams;
-        }
+        DocFunction();
+        DocFunction(bool, const std::string&, const std::string&, const std::string&);
+        bool operator==(const DocFunction&) const;
+        bool IsEmpty() const;
+        std::string ToString() const;
     };
 }
 
